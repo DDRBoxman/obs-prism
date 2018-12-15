@@ -1,0 +1,9 @@
+[package]
+name = "obsprism"
+version = "0.1.0"
+authors = ["Colin Edwards <colin@recursivepenguin.com>"]
+edition = "2018"
+
+[dependencies]
+nng = "0.3.0"
+hidapi = "0.5.0"
