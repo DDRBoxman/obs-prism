@@ -1,4 +1,5 @@
 extern crate hidapi;
+extern crate nng;
 
 use hidapi::HidApi;
 use std::{thread, time};
@@ -11,7 +12,12 @@ const BLINK1_REPORT2_SIZE: usize = 60;
 const BLINK1_BUF_SIZE:usize = BLINK1_REPORT_SIZE + 1;
 const BLINK1_BUF2_SIZE: usize = BLINK1_REPORT2_SIZE + 1;
 
+
 fn main() {
+    let mut socket = nng::Socket::new(nng::Protocol::Pair0).unwrap();
+    socket.dial("ipc:///tmp/obsprism.ipc");
+    socket.recv();
+
     println!("Printing all available hid devices:");
 
     let ten_millis = time::Duration::from_millis(1000);
