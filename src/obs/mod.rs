@@ -1,4 +1,4 @@
-use std::os::raw::{c_int, c_char, c_void};
+use std::os::raw::{c_char, c_int, c_void};
 
 #[repr(C)] // ensures that the memory layout of the struct is the same in Rust as in C.
 pub struct obs_module_t {
@@ -9,17 +9,17 @@ pub struct obs_module_t {
     pub module: *mut c_void,
     pub loaded: bool,
 
-    load: extern fn() -> bool,
-    unload: extern fn(),
-    post_load: extern fn(),
-    set_locale: extern fn(locale: *const c_char),
-    free_locale: extern fn(),
-    ver: extern fn() -> u32,
-    set_pointer: extern fn(module: *mut obs_module_t),
-    name: extern fn() -> *const c_char,
-    description: extern fn() -> *const c_char,
-    author: extern fn() -> *const c_char,
-    next: *mut obs_module_t
+    load: extern "C" fn() -> bool,
+    unload: extern "C" fn(),
+    post_load: extern "C" fn(),
+    set_locale: extern "C" fn(locale: *const c_char),
+    free_locale: extern "C" fn(),
+    ver: extern "C" fn() -> u32,
+    set_pointer: extern "C" fn(module: *mut obs_module_t),
+    name: extern "C" fn() -> *const c_char,
+    description: extern "C" fn() -> *const c_char,
+    author: extern "C" fn() -> *const c_char,
+    next: *mut obs_module_t,
 }
 
 #[repr(C)]
@@ -53,10 +53,13 @@ pub enum obs_frontend_event {
     OBS_FRONTEND_EVENT_PREVIEW_SCENE_CHANGED,
 
     OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP,
-    OBS_FRONTEND_EVENT_FINISHED_LOADING
+    OBS_FRONTEND_EVENT_FINISHED_LOADING,
 }
 
 #[link(name = "obs-frontend-api")]
 extern "C" {
-    pub fn obs_frontend_add_event_callback(callback: extern fn(event: obs_frontend_event, private_dat: *mut c_void), private_data: *mut c_void);
+    pub fn obs_frontend_add_event_callback(
+        callback: extern "C" fn(event: obs_frontend_event, private_dat: *mut c_void),
+        private_data: *mut c_void,
+    );
 }

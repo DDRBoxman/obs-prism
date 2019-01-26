@@ -16,4 +16,6 @@ path = "src/main.rs"
 
 [dependencies]
 nng = "0.3.0"
-hidapi = "0.5.0"
+blinkstick = "0.1.2"
+blink1 = "0.1.2"
+fitstat = "0.1.2"
